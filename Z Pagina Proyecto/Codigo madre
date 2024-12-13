@@ -1,0 +1,93 @@
+import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
+import './styles.css';
+
+const App = () => {
+  const [formData, setFormData] = useState({ name: '', email: '' });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert(`Submitted: ${JSON.stringify(formData)}`);
+  };
+
+  return (
+    <Router>
+      <Header />
+      <Switch>
+        <Route path="/" exact>
+          <Section title="Home" />
+        </Route>
+        <Route path="/about">
+          <Section title="About" />
+        </Route>
+        <Route path="/contact">
+          <Section title="Contact">
+            <form onSubmit={handleSubmit}>
+              <input 
+                type="text" 
+                name="name" 
+                placeholder="Name" 
+                value={formData.name} 
+                onChange={handleChange} 
+              />
+              <input 
+                type="email" 
+                name="email" 
+                placeholder="Email" 
+                value={formData.email} 
+                onChange={handleChange} 
+              />
+              <button type="submit">Submit</button>
+            </form>
+          </Section>
+        </Route>
+      </Switch>
+      <Footer />
+    </Router>
+  );
+};
+
+const Header = () => {
+  return (
+    <header>
+      <h1>My Website</h1>
+      <Menu />
+    </header>
+  );
+};
+
+const Menu = () => {
+  return (
+    <nav>
+      <ul>
+        <li><Link to="/">Home</Link></li>
+        <li><Link to="/about">About</Link></li>
+        <li><Link to="/contact">Contact</Link></li>
+      </ul>
+    </nav>
+  );
+};
+
+const Section = ({ title, children }) => {
+  return (
+    <div className="section">
+      <h2>{title}</h2>
+      {children}
+    </div>
+  );
+};
+
+const Footer = () => {
+  return (
+    <footer>
+      <p>© 2024 My Website</p>
+    </footer>
+  );
+};
+
+ReactDOM.render(<App />, document.getElementById('root'));
